@@ -93,6 +93,9 @@ export function KernelSocketWrapper<T extends ClassType<IWebSocketLike>>(SuperCl
             ...args: any[]
         ): boolean {
             if (event === 'message' && this.receiveHooks.length) {
+                if (event instanceof Buffer) {
+                    event = event.toString();
+                }
                 // Stick the receive hooks into the message chain. We use chain
                 // to ensure that:
                 // a) Hooks finish before we fire the event for real
